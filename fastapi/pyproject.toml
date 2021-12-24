@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "FastAPI service"
+version = "0.1.0"
+description = "Items CRUD with FastAPI and SQLalchemy"
+authors = ["Volodymyr Tseluiko <volodymyr.tseluiko@autodesk.com>"]
+
+[tool.poetry.dependencies]
+python = "3.9.9"
+fastapi = "^0.70.0"
+SQLAlchemy = "^1.4.27"
+uvicorn = "^0.16.0"
+psycopg2 = "^2.9.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

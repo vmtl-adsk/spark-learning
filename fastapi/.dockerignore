@@ -1,0 +1,8 @@
+*.md
+*/airflow/airflow.cfg
+*/airflow/airflow.db
+airflow.cfg
+airflow.db
+/airflow.cfg
+/airflow.db
+__pycache__

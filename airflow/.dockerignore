@@ -1,0 +1,6 @@
+*.md
+airflow.cfg
+airflow.db
+fastapi/**/*
+fastapi
+.venv
