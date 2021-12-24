@@ -1,4 +1,4 @@
-# Spark-Kafka jobs orchestrateed with Airflow
+# Spark-Kafka jobs orchestrated with Airflow
 The following instruments are used in the project:
   - **Poetry**: as a project dependency management tool
   - **FastAPI**: used to immitate a data stream (a request sent and processed in a Faust-Kafka task)
