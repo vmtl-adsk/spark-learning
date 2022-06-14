@@ -196,7 +196,7 @@ def write_stream_writer_to_cassandra(cassandraSession):
 def read_kafka_topic():
     # This method will read data from a Kafka Topic, transfrom the topic's Value column to json
     # And create a new DF based on the json
-    # Then will filter the result DF with item_price > 2500 and write it to Cassandra table
+    # Then will filter the result DF with item_price > 500 and write it to Cassandra table
     kafka_df = spark_session() \
         .readStream \
         .format('kafka') \
@@ -213,7 +213,9 @@ def read_kafka_topic():
             'item.tax as tax',
             'item.tax_with_price as tax_with_price')
 
-    kafka_df.where(f.col('price') > 1).writeStream \
+    kafka_df \
+        .where(f.col('price') > 500) \
+        .writeStream \
         .format('org.apache.spark.sql.cassandra') \
         .options(table=config.CASSANDRA_TABLENAME,
                  keyspace=config.CASSANDRA_KEYSPACE,

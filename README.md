@@ -7,42 +7,30 @@ The following instruments are used in the project:
   - **Spark**: to process a Kafka stream and persist the Data Stream to a **Cassandra** database
   - **Airflow**: to trigger tasks execution
   - **Docker**: to run everything in containers
+  - **Greate Expectations**: to validate data on all the steps of the pipeline
 
 ## Installation
-
 - Install Docker
-- Start Docker Kafka, Spark, Cassandra containers `spark-learning: docker-compose up`
-- (optional) `docker-compose up --scale spark-worker=3` to spin up the Spark additional spark workers
-- Install all dependencies `spark-learning: poetry install`
-
+- Install all project dependencies `spark-learning: poetry install`
 ### Airflow
 - (Optional) Change Airflow home location (if running Airflow locally) `export AIRFLOW_HOME=~spark-learning/airflow`
-- Create a custom Airflow docker image containing the project and its dependencie `spark-learning: docker  build . --file airflow/Dockerfile --tag my_airflow_image`
+- Create a custom Airflow docker image containing the project and its dependencies `spark-learning: docker  build . --file airflow/Dockerfile --tag my_airflow_image`
 - Start Airflow containers `spark-learning: dc -f airflow/docker-compose.yaml up`
-- Run following commands on the webserver and worker containers (install project deps and java8):
-  - `sudo apt-get update`
-  - `sudo apt install software-properties-common`
-  - `sudo add-apt-repository ppa:openjdk-r/ppa`
-  - `sudo apt-get install openjdk-8-jre`
-  - `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java`
-  - if any of the commands above return an error, then install default java `apt install default-jre` and java home will be different `export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/java`
+- Install project dependencies on webserver and worker containers:
   - `pip install poetry`
   - `poetry config virtualenvs.create false && poetry install`
-
 ### FastAPI
 - Create a FastAPI-Uvicorn image `spark-learning/fastapi: docker  build . --tag my_fastapi_image`
-- Start FastAPI container `docker-compose up`
-
+- Start FastAPI container `spark-learning/fastapi: docker-compose up`
 
 ## RUN
+- Start Docker Kafka, Spark, Cassandra containers `spark-learning: docker-compose up`
+- (optional) `docker-compose up --scale spark-worker=3` to spin up the Spark additional spark workers
 - Start faust-kafka worker (Required if **without** Airflow) `python data_processing/faust_kafka_stream.py worker -l info`
 - Start spark (Required if **without** Airflow) `python fastapi/spark.py`
-### Airflow
 - Test run a task in a DAG (Example) `airflow tasks test airflow_dag_1 print_date 2015-06-01`
-- Acecess webserver container `docker exec -it airflow_airflow-webserver_1 bash` and install poetry and project dependencies `poetry config virtualenvs.create false && poetry install`
-- Start Airflow UI web server `airflow webserver --debug &`
 
-
+pip install poetry && poetry config virtualenvs.create false && poetry install
 ## Helpers
 
 ### Postgres
@@ -53,3 +41,11 @@ The following instruments are used in the project:
 ### Kafka
 - Add more kafka brokers `docker-compose scale kafka=3`
 - Access a container as a root user `docker exec -it -u=0 airflow_airflow-webserver_1 bash`
+### Airflow
+- Acecess webserver container `docker exec -it airflow_airflow-webserver_1 bash`
+- Manually start Airflow UI web server `airflow webserver --debug &`
+### Great Expectations
+- Change default port for Jypiter notebooks in cas of ports conflict `export GE_JUPYTER_CMD='jupyter notebook --port=8187'`
+- Create a datasource `great_expectations datasource new`
+- Create an expectations suite `great_expectations suite new`
+- Create a checkpoint `great_expectations checkpoint new`

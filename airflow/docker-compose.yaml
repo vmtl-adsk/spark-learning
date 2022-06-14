@@ -45,12 +45,6 @@ x-airflow-common:
   # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
   &airflow-common
   image: my_airflow_image:latest
-  #build:
-  #  context: ..
-  #  dockerfile: airflow/Dockerfile
-  #  args:
-  #    PYTHON_BASE_IMAGE: python:3.9.9-buster
-  #    AIRFLOW_HOME: /opt/spark-learning/airflow
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
@@ -61,7 +55,7 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-    AIRFLOW_UID: 1000000
+    AIRFLOW_UID: 1000
     AIRFLOW_GID: 0
     AIRFLOW__CORE__DAGS_FOLDER: /opt/spark-learning/airflow/dags
     AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/spark-learning/airflow/logs
@@ -145,8 +139,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          'airflow jobs check --job-type SchedulerJob --hostname
-            "$${HOSTNAME}"'
+          'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"'
         ]
       interval: 10s
       timeout: 10s
@@ -160,18 +153,10 @@ services:
   airflow-worker:
     <<: *airflow-common
     command: celery worker
-    #entrypoint:
-    # [
-    #  "/bin/bash",
-    # "-c",
-    # "pip install poetry && poetry config virtualenvs.create false &&
-    #  poetry install"
-    #]
     healthcheck:
       test:
         - "CMD-SHELL"
-        - 'celery --app airflow.executors.celery_executor.app inspect ping -d
-          "celery@$${HOSTNAME}"'
+        - 'celery --app airflow.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
       interval: 10s
       timeout: 10s
       retries: 5
@@ -193,8 +178,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          'airflow jobs check --job-type TriggererJob --hostname
-            "$${HOSTNAME}"'
+          'airflow jobs check --job-type TriggererJob --hostname "$${HOSTNAME}"'
         ]
       interval: 10s
       timeout: 10s
@@ -211,9 +195,7 @@ services:
       [
         "/bin/bash",
         "-c",
-        "airflow db init && airflow users create --role Admin --username
-          airflow --password airflow --email airflow@airflow.com --firstname
-          airflow --lastname airflow"
+        "airflow db init && airflow users create --role Admin --username airflow --password airflow --email airflow@airflow.com --firstname airflow --lastname airflow"
       ]
     #restart: on-failure
     environment:

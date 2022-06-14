@@ -11,11 +11,7 @@ class DB_alchemy:
 
     def __init__(self, host: str, port: str, dbName: str, userName: str, pwd: str) -> None:
 
-        # This will connect with a static DB
-        #DB_URL = f'postgresql://{userName}:{pwd}@{host}:{port}/{dbName}'
-        # This will connect with a postgres container DB (for containers,
-        # which are connected to the same network)
-        DB_URL = f'postgresql+psycopg2://{userName}:{pwd}@postgres:{port}/{dbName}'
+        DB_URL = f'postgresql+psycopg2://{userName}:{pwd}@{host}:{port}/{dbName}'
         self.host = host
         self.port = port
         self.dbName = dbName
