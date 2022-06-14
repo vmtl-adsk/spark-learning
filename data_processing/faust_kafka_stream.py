@@ -2,8 +2,8 @@ import faust
 from mode import Service
 from send_request import send_request_new_item
 import config
-import sys
-import time
+#import sys
+#import time
 
 
 class Item(faust.Record, serializer='json'):
@@ -58,15 +58,15 @@ async def ingestData(items):
         yield item
 
 
-# @app.timer(interval=5.0) # Interval task to send a request and send received response to an agent
-@app.task  # This task will send a request and then will its response to the agent
+# Interval task to send a request and send received response to an agent
+@app.timer(interval=5.0)
+# @app.task  # This task will send a request and then will its response to the agent
 async def send_new_item_record(app: faust.app):
-    time.sleep(10)
     response = send_request_new_item()
     item = new_item_record(response)
     await ingestData.send(key='MYkey', value=item)
-    time.sleep(20)
-    sys.exit(0)
+    # time.sleep(60)
+    # sys.exit(0)
 
 if __name__ == '__main__':
     app.main()

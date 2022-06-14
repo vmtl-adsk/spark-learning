@@ -33,6 +33,7 @@ class PostgreConnection:
             return self.cur().fetchall()
 
 
+# con = PostgreConnection('postgres', '5432', 'vmtl', 'docker', 'docker')
 # QUERIES EXAMPLE
 # query = sql.SQL('SELECT* FROM {}').format(sql.Identifier(schema, table))
 # query = sql.SQL('SELECT * FROM public.versions;')

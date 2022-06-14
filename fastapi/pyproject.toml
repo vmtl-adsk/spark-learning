@@ -5,7 +5,7 @@ description = "Items CRUD with FastAPI and SQLalchemy"
 authors = ["Volodymyr Tseluiko <volodymyr.tseluiko@autodesk.com>"]
 
 [tool.poetry.dependencies]
-python = "3.9.9"
+python = "3.9.1"
 fastapi = "^0.70.0"
 SQLAlchemy = "^1.4.27"
 uvicorn = "^0.16.0"
